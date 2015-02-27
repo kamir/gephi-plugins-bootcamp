@@ -1,8 +1,8 @@
 /**
- * 
- * The main purpose of the Gephi-Hadoop-Connector project is the integration
- * of a loader function for Graphs, stored in Hadoop clusters into Gephi.
- * 
+ *
+ * The main purpose of the Gephi-Hadoop-Connector project is the integration of
+ * a loader function for Graphs, stored in Hadoop clusters into Gephi.
+ *
  */
 package org.gephi.plugin.hadoop.connector;
 
@@ -10,8 +10,6 @@ import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.gephi.plugins.etosha.impala.ImpalaImportConnector;
-
-
 
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -31,42 +29,45 @@ public final class LoadFromHadoopMainAction implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        String[] options = new String[] {"Hive", "Impala" };
-        int opt = JOptionPane.showOptionDialog(null, "Select import mode ...", "Where is your network stored?", 
-        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-        null, options, options[0]);
-        
-        javax.swing.JOptionPane.showMessageDialog(null,"You selected : (" + opt +") " + options[opt]);
-        
-        switch( opt ) { 
-            
-            case 4 : {
-                break;
-            } 
-              
-            case 3 : {
+        int opt = 1; // default is IMPALA !!!
+
+        String[] options = new String[]{"Hive", "Impala"};
+
+//        int opt = JOptionPane.showOptionDialog(null, "Select import mode ...", "Where is your network stored?", 
+//        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+//        null, options, options[0]);
+        switch (opt) {
+
+            case 4: {
                 break;
             }
-                
-            
-            case 2 : {
+
+            case 3: {
                 break;
-            } 
-                
-            
-            case 1 : { 
-                ImpalaImportConnector.main( null );
+            }
+
+            case 2: {
                 break;
-            } 
-            
-            case 0 : {
+            }
+
+            case 1: {
+
+                String message = "Selected mode : (" + opt + ") " + options[opt] + "\n"
+                        + "Your Impala server is: " + HadoopClusterDefaults.IMPALA_DEAMON_IP;
+
+                javax.swing.JOptionPane.showMessageDialog(null, message);
+
+                ImpalaImportConnector.main(null);
+
+                break;
+            }
+
+            case 0: {
                 // HiveImportConnector.main( null );
                 break;
-            } 
-                    
-        
+            }
+
         }
 
-        
     }
 }

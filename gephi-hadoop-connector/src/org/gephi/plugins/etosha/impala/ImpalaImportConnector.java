@@ -51,20 +51,63 @@ import org.openide.util.Lookup;
  * 
  */
 public class ImpalaImportConnector {
+    
+    static public String defaultNQ = "SELECT nodes.id AS id, nodes.label AS label, nodes.url FROM nodes";
+    static public String defaultEQ = "SELECT edges.source AS source, edges.target AS target, edges.label AS label, edges.weight AS weight FROM edges";
 
     public static ProjectController pc = Lookup.getDefault().lookup(ProjectController.class);
-        
    
     public static void main(String[] args) {
         ImpalaImportConnector tool = new ImpalaImportConnector();
         tool.script();
     }
 
+    /**
+     * We still have hard coded:
+     * 
+     *       DB, username, credential
+     *       node-query
+     *       edge-query   
+     * 
+     * @return 
+     */
+    public static boolean ping() {
+ 
+        boolean b = false;
+        
+        EdgeListImpalaDatabaseImpl db = new EdgeListImpalaDatabaseImpl();
+        
+        int impalaPort = HadoopClusterDefaults.IMPALA_DEAMON_PORT;
+        
+        db.setDBName(";auth=noSasl"); 
+        
+        db.setHost( HadoopClusterDefaults.IMPALA_DEAMON_IP );
+        db.setPort( impalaPort );  
+        
+        db.setUsername("cloudera");
+        db.setPasswd("cloudera");
+        
+        ImpalaJDBCDriver driver = new ImpalaJDBCDriver();
+        
+        db.setSQLDriver( driver );
+        
+        String url = SQLUtils.getUrl(db.getSQLDriver(), db.getHost(), db.getPort(), db.getDBName());
+        
+        javax.swing.JOptionPane.showMessageDialog(null, "[Request URL]\n" + url);
+        
+        System.out.println( ">>> Request URL  : " + url );
+
+        b = driver.ping();
+        
+        return b;
+        
+    
+    }
+
     public void script() {
    
         if ( pc == null ) pc = Lookup.getDefault().lookup(ProjectController.class);
-        
-        
+       
         //Init a project - and therefore a workspace
         Project pro = pc.getCurrentProject();
         
@@ -85,9 +128,12 @@ public class ImpalaImportConnector {
         //Import database
         EdgeListImpalaDatabaseImpl db = new EdgeListImpalaDatabaseImpl();
         
+        int impalaPort = HadoopClusterDefaults.IMPALA_DEAMON_PORT;
+        
         db.setDBName(";auth=noSasl"); 
+        
         db.setHost( HadoopClusterDefaults.IMPALA_DEAMON_IP );
-        db.setPort(21050);  
+        db.setPort( impalaPort );  
         
         db.setUsername("cloudera");
         db.setPasswd("cloudera");
@@ -96,68 +142,76 @@ public class ImpalaImportConnector {
         
         String url = SQLUtils.getUrl(db.getSQLDriver(), db.getHost(), db.getPort(), db.getDBName());
         
+        javax.swing.JOptionPane.showMessageDialog(null, "[Request URL]\n" + url);
+
         System.out.println( ">>> Request URL  : " + url );
-
+//        
+//        MultiLayerNetwork.askUserForImportSettings( db );
+//
+//        String tab = MultiLayerNetwork.getSelected().tableName;
+//        String nQ = MultiLayerNetwork.getSelected().nodelistQ;
+//        String eQ = MultiLayerNetwork.getSelected().edgelistQ;
+//
+//        System.out.println();
+//        System.out.println( ">>> Table name   : " + tab );
+//        System.out.println( ">>> Nodes query  : " + nQ );
+//        System.out.println( ">>> Edeges query : " + eQ );
+//
+//        db.setNodeQuery( nQ );
+//        db.setEdgeQuery( eQ );
+//        
         
-        String tab = MultiLayerNetwork.getSelected().tableName;
-        String nQ = MultiLayerNetwork.getSelected().nodelistQ;
-        String eQ = MultiLayerNetwork.getSelected().edgelistQ;
-
-        System.out.println();
-        System.out.println( ">>> Table name   : " + tab );
-        System.out.println( ">>> Nodes query  : " + nQ );
-        System.out.println( ">>> Edeges query : " + eQ );
-
-        db.setNodeQuery( nQ );
-        db.setEdgeQuery( eQ );
-        
-//        db.setNodeQuery("SELECT nodes.id AS id, nodes.label AS label, nodes.url FROM nodes");
-//        db.setEdgeQuery("SELECT edges.source AS source, edges.target AS target, edges.label AS label, edges.weight AS weight FROM edges");
+        db.setNodeQuery( defaultNQ );
+        db.setEdgeQuery( defaultEQ );
         
         ImporterEdgeList edgeListImporter = new ImporterEdgeList();
         
         Container container = null;
         
+        try {
+            
+            container = importController.importDatabase(db, edgeListImporter);
+
+            container.setAllowAutoNode( true );      //false = Don't create missing nodes
         
-                
-//        try {
-//            
-//            container = importController.importDatabase(db, edgeListImporter);
-//
-//            container.setAllowAutoNode( true );      //false = Don't create missing nodes
-//        
-//            if ( MultiLayerNetwork.getSelected().directed ) container.getLoader().setEdgeDefault(EdgeDefault.DIRECTED);   //Force DIRECTED
-//            else container.getLoader().setEdgeDefault(EdgeDefault.UNDIRECTED);   //Force UNDIRECTED
-//
-//            //Append imported data to GraphAPI
-//            importController.process(container, new DefaultProcessor(), workspace);
-//            
-//        }
-//        catch (Exception ex ) {
-//            ex.printStackTrace();
-//        }
-//        finally {
-//            if ( container != null )
-//                System.out.println( container.getReport().getText() );
-//        }
-//        
-//        
-//        //See if graph is well imported
-//        DirectedGraph graph = graphModel.getDirectedGraph();
-//        System.out.println("[Nodes:] " + graph.getNodeCount());
-//        System.out.println("[Edges:] " + graph.getEdgeCount());
-//
-//        //Layout - 100 Yifan Hu passes
-//        System.out.println( "> Run the YifanHuLayout layout for 100 loops."  );
-//
-//        YifanHuLayout layout = new YifanHuLayout(null, new StepDisplacement(1f));
-//        layout.setGraphModel(graphModel);
-//        layout.resetPropertiesValues();
-//        layout.initAlgo();
-//        for (int i = 0; i < 100 && layout.canAlgo(); i++) {
-//            layout.goAlgo();
-//        }
-//        layout.endAlgo();
+            if ( MultiLayerNetwork.getSelected().directed ) container.getLoader().setEdgeDefault(EdgeDefault.DIRECTED);   //Force DIRECTED
+            else container.getLoader().setEdgeDefault(EdgeDefault.UNDIRECTED);   //Force UNDIRECTED
+
+            //Append imported data to GraphAPI
+            importController.process(container, new DefaultProcessor(), workspace);
+            
+            javax.swing.JOptionPane.showMessageDialog(null, "> Import finished sucessfully.");
+
+        }
+        catch (Exception ex ) {
+
+            ex.printStackTrace();
+            
+            javax.swing.JOptionPane.showMessageDialog(null, "> Import finished with problems !");
+
+        }
+        finally {
+            if ( container != null )
+                System.out.println( container.getReport().getText() );
+        }
+        
+        
+        //See if graph is well imported
+        DirectedGraph graph = graphModel.getDirectedGraph();
+        System.out.println("[Nodes:] " + graph.getNodeCount());
+        System.out.println("[Edges:] " + graph.getEdgeCount());
+
+        //Layout - 100 Yifan Hu passes
+        System.out.println( "> Run the YifanHuLayout layout for 100 loops."  );
+
+        YifanHuLayout layout = new YifanHuLayout(null, new StepDisplacement(1f));
+        layout.setGraphModel(graphModel);
+        layout.resetPropertiesValues();
+        layout.initAlgo();
+        for (int i = 0; i < 100 && layout.canAlgo(); i++) {
+            layout.goAlgo();
+        }
+        layout.endAlgo();
 
         System.out.println( "> Done."  );
 

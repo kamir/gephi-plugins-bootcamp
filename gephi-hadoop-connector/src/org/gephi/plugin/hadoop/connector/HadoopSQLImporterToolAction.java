@@ -1,13 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package org.gephi.plugin.hadoop.connector;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.etosha.MultiLayerNetwork;
+import org.etosha.g2h.SimpleGraphExporter;
 import org.gephi.project.api.Project;
 import org.gephi.project.api.ProjectController;
 import org.gephi.project.api.Workspace;
@@ -34,8 +31,8 @@ public final class HadoopSQLImporterToolAction implements ActionListener {
         
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO implement action body
-        javax.swing.JOptionPane.showMessageDialog(null, "Init default MultiLayerNetwork ...");
+
+        javax.swing.JOptionPane.showMessageDialog(null, "> init default layer in MultiLayerNetwork ...");
         
         Project pro = pc.getCurrentProject();
         Workspace workspace = pc.newWorkspace(pro);
@@ -43,7 +40,8 @@ public final class HadoopSQLImporterToolAction implements ActionListener {
         // will call SMW to get a network descriptor ...
         MultiLayerNetwork.initNetworks();
         
-//        SimpleGraphExporter se = new SimpleGraphExporter();
-//        se.centerOnScreen();
+        SimpleGraphExporter se = new SimpleGraphExporter();
+        se.centerOnScreen();
+        
     }
 }

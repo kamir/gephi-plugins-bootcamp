@@ -1,5 +1,6 @@
 Manifest-Version: 1.0
-OpenIDE-Module: org.etosha.g2h
+AutoUpdate-Show-In-Client: true
+OpenIDE-Module: org.etosha.g2h/1
 OpenIDE-Module-Localizing-Bundle: org/etosha/g2h/Bundle.properties
-OpenIDE-Module-Specification-Version: 1.0
+OpenIDE-Module-Specification-Version: 1.0.10
 

@@ -1,7 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * 
+ * We define a NetworkLayer as a METADATA entity which is aware of two
+ * queries, one for an edge list and one for a node list.
+ * 
  */
 
 package org.etosha;
@@ -13,6 +14,15 @@ import static org.gephi.plugins.etosha.impala.ImpalaDynamicImportConnector.curre
  * @author kamir
  */
 public class NetworkLayer {
+    
+    /**
+     * In case of working with a METADATA repository, we can also access a 
+     * public descriptor.
+     * 
+     */
+    public String descriptiorURI = null;
+    
+    public String description = "This is an example, based on our research started in 2009.";
     
     public String tableName = "edgelist_es_de_amoklauf_von_erfurt";
 
