@@ -116,8 +116,8 @@ public final class TimedependentMultiLayerNetworkManager extends TopComponent {
 
     public TimedependentMultiLayerNetworkManager() {
         initComponents();
-        setName(Bundle.CTL_HadoopImporterWindowTopComponent());
-        setToolTipText(Bundle.HINT_HadoopImporterWindowTopComponent());
+//        setName(Bundle.CTL_HadoopImporterWindowTopComponent());
+//        setToolTipText(Bundle.HINT_HadoopImporterWindowTopComponent());
         putClientProperty(TopComponent.PROP_CLOSING_DISABLED, Boolean.TRUE);
         putClientProperty(TopComponent.PROP_DRAGGING_DISABLED, Boolean.TRUE);
         putClientProperty(TopComponent.PROP_UNDOCKING_DISABLED, Boolean.TRUE);
