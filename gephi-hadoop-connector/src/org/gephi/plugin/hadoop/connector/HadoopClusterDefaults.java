@@ -18,14 +18,15 @@ package org.gephi.plugin.hadoop.connector;
  */
 public class HadoopClusterDefaults {
     
-    public static String HIVE_SERVER2_IP = "172.16.14.224";
-    public static String HIVE_SERVER_IP = "172.16.14.224";
-    public static String IMPALA_DEAMON_IP = "172.16.14.224";
-    public static String MySQL_SERVER_IP = "172.16.14.224";
+    public static String HIVE_SERVER2_IP = "127.0.0.1";
+    public static String HIVE_SERVER_IP = "127.0.0.1";
+    public static String MySQL_SERVER_IP = "127.0.0.1";
 
     public static int HIVE_SERVER2_PORT = 0;
     public static int HIVE_SERVER_PORT = 0;
-    public static int IMPALA_DEAMON_PORT = 0;
     public static int MySQL_SERVER_PORT = 0;
 
+    public static String IMPALA_DEAMON_IP = "172.16.14.224";
+    public static int IMPALA_DEAMON_PORT = 21050;
+    
 }

@@ -15,14 +15,11 @@ import org.openide.util.Exceptions;
  * @author Mirko Kämpf
  */
 public class ImpalaJDBCDriver implements SQLDriver {
-    
-    // jdbc:hive2://<host>:<port>/<dbName>;<sessionConfs>?<hiveConfs>#<hiveVars>
-    
-    String IMPALAD_HOST = HadoopClusterDefaults.IMPALA_DEAMON_IP;
-    String IMPALAD_JDBC_PORT = "21050";
-    String CONNECTION_URL = "jdbc:hive2://" + IMPALAD_HOST + ':' + IMPALAD_JDBC_PORT + "/;auth=noSasl";
+ 
     String JDBC_DRIVER_NAME = "org.apache.hive.jdbc.HiveDriver";
  
+    String CONNECTION_URL = null;
+            
     static Connection con = null;
             
     public ImpalaJDBCDriver() {
@@ -32,7 +29,7 @@ public class ImpalaJDBCDriver implements SQLDriver {
             Class.forName(JDBC_DRIVER_NAME);
 
             // refresh the URL ...
-            CONNECTION_URL = "jdbc:hive2://" + IMPALAD_HOST + ':' + IMPALAD_JDBC_PORT + "/;auth=noSasl";
+            CONNECTION_URL = "jdbc:hive2://" + HadoopClusterDefaults.IMPALA_DEAMON_IP + ':' + HadoopClusterDefaults.IMPALA_DEAMON_PORT + "/;auth=noSasl";
  
             con = DriverManager.getConnection(CONNECTION_URL);
             

@@ -7,6 +7,7 @@ package org.gephi.plugin.hadoop.connector;
 
 import java.awt.Color;
 import org.gephi.plugins.etosha.impala.ImpalaImportConnector;
+import org.openide.util.NbPreferences;
 
 final class G2HPanel extends javax.swing.JPanel {
 
@@ -168,7 +169,7 @@ final class G2HPanel extends javax.swing.JPanel {
 
         boolean isAvailable = ImpalaImportConnector.ping();
         if ( isAvailable ){
-            this.pingButton.setForeground( new Color( 0, 255, 0 ) );
+            this.pingButton.setForeground( new Color( 0, 100, 0 ) );
         }
         else {
             this.pingButton.setForeground( new Color( 255, 0, 0 )  );
@@ -177,13 +178,14 @@ final class G2HPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_pingButtonActionPerformed
 
     void load() {
-        // TODO read settings and initialize GUI
-        // Example:        
-        // someCheckBox.setSelected(Preferences.userNodeForPackage(G2HPanel.class).getBoolean("someFlag", false));
-        // or for org.openide.util with API spec. version >= 7.4:
-        // someCheckBox.setSelected(NbPreferences.forModule(G2HPanel.class).getBoolean("someFlag", false));
-        // or:
-        // someTextField.setText(SomeSystemOption.getDefault().getSomeStringProperty());
+    
+        this.jTf_IMPALA_DEAMON_HOST.setText(NbPreferences.forModule(G2HPanel.class).get("IMPALA_DEAMON_IP", "172.16.14.224"));
+        this.jTf_IMPALA_PORT.setText(NbPreferences.forModule(G2HPanel.class).get("IMPALA_DEAMON_PORT", "21050"));
+        
+        HadoopClusterDefaults.IMPALA_DEAMON_IP = this.jTf_IMPALA_DEAMON_HOST.getText();
+        HadoopClusterDefaults.IMPALA_DEAMON_PORT = Integer.parseInt( this.jTf_IMPALA_PORT.getText() );
+
+        
     }
 
     void store() {
@@ -198,6 +200,9 @@ final class G2HPanel extends javax.swing.JPanel {
         HadoopClusterDefaults.IMPALA_DEAMON_IP = this.jTf_IMPALA_DEAMON_HOST.getText();
         HadoopClusterDefaults.IMPALA_DEAMON_PORT = Integer.parseInt( this.jTf_IMPALA_PORT.getText() );
 
+        NbPreferences.forModule(G2HPanel.class).put("IMPALA_DEAMON_IP", this.jTf_IMPALA_DEAMON_HOST.getText() );
+        NbPreferences.forModule(G2HPanel.class).put("IMPALA_DEAMON_PORT", this.jTf_IMPALA_PORT.getText() );
+        
         javax.swing.JOptionPane.showMessageDialog(null, "values updated ... ");
     }
 
