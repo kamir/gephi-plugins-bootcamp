@@ -24,11 +24,6 @@ import org.openide.util.Lookup;
  */
 public class SimpleGraphExporter extends javax.swing.JFrame {
     
-    public static String HIVE_SERVER2_IP = HadoopClusterDefaults.HIVE_SERVER2_IP;
-    public static String HIVE_SERVER_IP = HadoopClusterDefaults.HIVE_SERVER_IP;
-    public static String MySQL_SERVER_IP = HadoopClusterDefaults.MySQL_SERVER_IP;
-    
-
     /**
      * Creates new form SimpleGraphExporter
      */

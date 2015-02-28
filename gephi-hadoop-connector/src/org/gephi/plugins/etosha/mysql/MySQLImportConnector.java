@@ -93,7 +93,8 @@ public class MySQLImportConnector {
         EdgeListDatabaseImpl db = new EdgeListDatabaseImpl();
         
         db.setDBName("gephiTEST");
-        db.setHost(HadoopClusterDefaults.MySQL_SERVER_IP);
+//        db.setHost( HadoopClusterDefaults.MySQL_SERVER_IP);
+        db.setHost( "127.0.0.1" );
         db.setPasswd("training");
         db.setSQLDriver(new MySQLDriver());
         db.setPort(3306);

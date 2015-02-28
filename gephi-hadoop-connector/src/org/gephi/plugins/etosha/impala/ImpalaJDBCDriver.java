@@ -101,7 +101,7 @@ public class ImpalaJDBCDriver implements SQLDriver {
                 i++;
             }
             
-            javax.swing.JOptionPane.showMessageDialog(null, "[Edges] " + i);
+            // javax.swing.JOptionPane.showMessageDialog(null, "[Edges] " + i);
 
             b = true;
         }

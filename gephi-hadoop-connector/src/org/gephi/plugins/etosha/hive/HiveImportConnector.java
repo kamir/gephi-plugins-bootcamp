@@ -115,7 +115,8 @@ public class HiveImportConnector {
         EdgeListHiveDatabaseImpl db = new EdgeListHiveDatabaseImpl();
         
         db.setDBName("default"); // !!!
-        db.setHost( HadoopClusterDefaults.HIVE_SERVER_IP );
+        db.setHost( "127.0.0.1" );
+ //       db.setHost( HadoopClusterDefaults.HIVE_SERVER_IP );
         db.setPort(10000); // !!!
         
         db.setUsername("kamir");

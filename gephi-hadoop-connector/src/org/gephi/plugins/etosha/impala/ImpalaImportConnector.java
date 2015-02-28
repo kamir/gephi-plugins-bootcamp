@@ -1,23 +1,3 @@
-/*
-Copyright 2008-2010 Gephi
-Authors : Mathieu Bastian <mathieu.bastian@gephi.org>
-Website : http://www.gephi.org
-
-This file is part of Gephi.
-
-Gephi is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
-
-Gephi is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with Gephi.  If not, see <http://www.gnu.org/licenses/>.
-*/
 package org.gephi.plugins.etosha.impala;
  
 import org.gephi.plugin.hadoop.connector.HadoopSQLImporterToolAction;
@@ -104,7 +84,17 @@ public class ImpalaImportConnector {
     
     }
 
-    public void script() {
+    /**
+     * 
+     * This method imports data into a new Project.
+     * The test requires an Impala cluster with an edges and nodes
+     * table.
+     * 
+     */
+    public String script() {
+        
+        StringBuffer errorLog = new StringBuffer();
+        errorLog.append("OK");
    
         if ( pc == null ) pc = Lookup.getDefault().lookup(ProjectController.class);
        
@@ -182,6 +172,7 @@ public class ImpalaImportConnector {
             
             javax.swing.JOptionPane.showMessageDialog(null, "> Import finished sucessfully.");
 
+            
         }
         catch (Exception ex ) {
 
@@ -189,10 +180,15 @@ public class ImpalaImportConnector {
             
             javax.swing.JOptionPane.showMessageDialog(null, "> Import finished with problems !");
 
+            errorLog.append( ex.getMessage() );
+            errorLog.append( ex.getCause() );
+            
         }
         finally {
-            if ( container != null )
+            if ( container != null ) {
                 System.out.println( container.getReport().getText() );
+                errorLog.append( container.getReport().getText() );
+            }
         }
         
         
@@ -215,6 +211,7 @@ public class ImpalaImportConnector {
 
         System.out.println( "> Done."  );
 
+        return errorLog.toString();
 
     }
 }

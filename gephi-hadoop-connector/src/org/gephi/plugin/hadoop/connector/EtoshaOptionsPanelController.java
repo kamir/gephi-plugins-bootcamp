@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.gephi.plugin.hadoop.connector;
 
 import java.beans.PropertyChangeListener;
@@ -8,16 +13,15 @@ import org.netbeans.spi.options.OptionsPanelController;
 import org.openide.util.HelpCtx;
 import org.openide.util.Lookup;
 
-
 @OptionsPanelController.SubRegistration(
-        displayName = "#AdvancedOption_DisplayName_G2H",
-        keywords = "#AdvancedOption_Keywords_G2H",
-        keywordsCategory = "Advanced/G2H"
+        displayName = "#AdvancedOption_DisplayName_Etosha",
+        keywords = "#AdvancedOption_Keywords_Etosha",
+        keywordsCategory = "Advanced/Etosha"
 )
-@org.openide.util.NbBundle.Messages({"AdvancedOption_DisplayName_G2H=Gephi-Hadoop-Connector", "AdvancedOption_Keywords_G2H=gephi impala connector"})
-public final class G2HOptionsPanelController extends OptionsPanelController {
+@org.openide.util.NbBundle.Messages({"AdvancedOption_DisplayName_Etosha=Etosha", "AdvancedOption_Keywords_Etosha=meta etosha"})
+public final class EtoshaOptionsPanelController extends OptionsPanelController {
 
-    private G2HPanel panel;
+    private EtoshaPanel panel;
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private boolean changed;
 
@@ -64,9 +68,9 @@ public final class G2HOptionsPanelController extends OptionsPanelController {
         pcs.removePropertyChangeListener(l);
     }
 
-    private G2HPanel getPanel() {
+    private EtoshaPanel getPanel() {
         if (panel == null) {
-            panel = new G2HPanel(this);
+            panel = new EtoshaPanel(this);
         }
         return panel;
     }

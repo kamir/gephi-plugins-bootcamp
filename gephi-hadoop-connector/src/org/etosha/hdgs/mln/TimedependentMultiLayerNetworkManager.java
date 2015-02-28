@@ -5,6 +5,7 @@ import java.awt.List;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -23,6 +24,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import org.etosha.MultiLayerNetwork;
 import org.etosha.NetworkLayer;
+import org.etosha.utils.TextAreaAsOutputStream;
 import org.gephi.plugins.etosha.mysql.MySQLImportConnector;
 
 import org.gephi.data.attributes.api.AttributeController;
@@ -75,12 +77,10 @@ import org.openide.util.NbBundle.Messages;
 })
 public final class TimedependentMultiLayerNetworkManager extends TopComponent {
     
-    public static String HIVE_SERVER_IP = HadoopClusterDefaults.HIVE_SERVER_IP;
-    public static String MySQL_SERVER_IP = HadoopClusterDefaults.MySQL_SERVER_IP;
-
-
+//    public static String HIVE_SERVER_IP = HadoopClusterDefaults.HIVE_SERVER_IP;
+//    public static String MySQL_SERVER_IP = HadoopClusterDefaults.MySQL_SERVER_IP;
     
-        // Variables declaration - do not modify                     
+    // Variables declaration - do not modify                     
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenuItem contentsMenuItem;
     private javax.swing.JMenuItem copyMenuItem;
@@ -109,10 +109,25 @@ public final class TimedependentMultiLayerNetworkManager extends TopComponent {
     // End of variables declaration                   
     
 
+    boolean isStandalone = false;
+    
+    TextAreaAsOutputStream out = null;
+    
     public TimedependentMultiLayerNetworkManager() {
+        
         initComponents();
+        
+        out = new TextAreaAsOutputStream( jTa_LOG , "[LOGGING] ");
+        
+        System.setOut( new PrintStream( out ) );
+        
+        System.out.println( "> GO ...");
+        
         setName(Bundle.CTL_TimedependentMultiLayerNetworkManager());
         setToolTipText(Bundle.HINT_TimedependentMultiLayerNetworkManager());
+        
+        this.jLabel7.setText( HadoopClusterDefaults.getEtoshaMetastoreURI() );
+        
         putClientProperty(TopComponent.PROP_CLOSING_DISABLED, Boolean.TRUE);
         putClientProperty(TopComponent.PROP_DRAGGING_DISABLED, Boolean.TRUE);
         putClientProperty(TopComponent.PROP_UNDOCKING_DISABLED, Boolean.TRUE);
@@ -162,7 +177,8 @@ public final class TimedependentMultiLayerNetworkManager extends TopComponent {
         jTextField3 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTa_LOG = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
@@ -297,7 +313,7 @@ public final class TimedependentMultiLayerNetworkManager extends TopComponent {
         jtaLAYERLISTE.setRows(5);
         jScrollPane4.setViewportView(jtaLAYERLISTE);
 
-        jLabel7.setFont(new java.awt.Font("Sana", 0, 24)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Seravek", 0, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 153, 204));
         org.openide.awt.Mnemonics.setLocalizedText(jLabel7, org.openide.util.NbBundle.getMessage(TimedependentMultiLayerNetworkManager.class, "TimedependentMultiLayerNetworkManager.jLabel7.text")); // NOI18N
 
@@ -409,28 +425,19 @@ public final class TimedependentMultiLayerNetworkManager extends TopComponent {
 
         jTabbedPane1.addTab(org.openide.util.NbBundle.getMessage(TimedependentMultiLayerNetworkManager.class, "TimedependentMultiLayerNetworkManager.jPanel7.TabConstraints.tabTitle"), jPanel7); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(jButton2, org.openide.util.NbBundle.getMessage(TimedependentMultiLayerNetworkManager.class, "TimedependentMultiLayerNetworkManager.jButton2.text")); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
+        jPanel6.setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(1755, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addContainerGap())
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addGap(0, 617, Short.MAX_VALUE)
-                .addComponent(jButton2))
-        );
+        jTa_LOG.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
+        jTa_LOG.setColumns(20);
+        jTa_LOG.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 10)); // NOI18N
+        jTa_LOG.setForeground(new java.awt.Color(0, 102, 102));
+        jTa_LOG.setLineWrap(true);
+        jTa_LOG.setRows(30);
+        jTa_LOG.setWrapStyleWord(true);
+        jTa_LOG.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(TimedependentMultiLayerNetworkManager.class, "TimedependentMultiLayerNetworkManager.jTa_LOG.border.title"))); // NOI18N
+        jScrollPane5.setViewportView(jTa_LOG);
+
+        jPanel6.add(jScrollPane5, java.awt.BorderLayout.CENTER);
 
         jTabbedPane1.addTab(org.openide.util.NbBundle.getMessage(TimedependentMultiLayerNetworkManager.class, "TimedependentMultiLayerNetworkManager.jPanel6.TabConstraints.tabTitle"), jPanel6); // NOI18N
 
@@ -452,7 +459,7 @@ public final class TimedependentMultiLayerNetworkManager extends TopComponent {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(0, 617, Short.MAX_VALUE)
+                .addGap(0, 636, Short.MAX_VALUE)
                 .addComponent(jButton1))
         );
 
@@ -476,7 +483,7 @@ public final class TimedependentMultiLayerNetworkManager extends TopComponent {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(0, 617, Short.MAX_VALUE)
+                .addGap(0, 636, Short.MAX_VALUE)
                 .addComponent(jButton3))
         );
 
@@ -490,7 +497,7 @@ public final class TimedependentMultiLayerNetworkManager extends TopComponent {
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 646, Short.MAX_VALUE)
+            .addGap(0, 665, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab(org.openide.util.NbBundle.getMessage(TimedependentMultiLayerNetworkManager.class, "TimedependentMultiLayerNetworkManager.jPanel5.TabConstraints.tabTitle"), jPanel5); // NOI18N
@@ -516,7 +523,7 @@ public final class TimedependentMultiLayerNetworkManager extends TopComponent {
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-        System.exit(0);
+        if ( isStandalone ) System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
@@ -548,20 +555,6 @@ public final class TimedependentMultiLayerNetworkManager extends TopComponent {
 // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
-        setWaiting();
-        
-        if ( appendAsNewTimeRange ) {
-            ImpalaDynamicImportConnector.currentPartitionId = (Integer)this.jSpinnerPARTITION.getValue();
-            ImpalaDynamicImportConnector.main( null );
-        }
-        else ImpalaImportConnector.main( null );
-        
-        setDone();     
-        
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 
         setWaiting();
@@ -570,7 +563,6 @@ public final class TimedependentMultiLayerNetworkManager extends TopComponent {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
         
         String networkName = this.jTextField1.getText(); 
             
@@ -592,29 +584,28 @@ public final class TimedependentMultiLayerNetworkManager extends TopComponent {
     public static boolean appendAsNewTimeRange = true;
     
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-        
-        this.jTextField1.setForeground(Color.orange);
-        
-        importDirected = this.jcbDIRECTED.isSelected();
-        appendAsNewTimeRange = this.jcbAppend.isSelected();
-        
-        NetworkLayer nl = new NetworkLayer();
-           
-        nl.edgelistQ = this.edgesStatic.getText();
-        nl.nodelistQ = this.nodes.getText();       
-        nl.directed = importDirected;
-        
-        MultiLayerNetwork.setDefaultLayer(nl);
-        
-        try { 
-            jButton2ActionPerformed( null );
-            this.jTextField1.setForeground(Color.green);
-        } 
-        catch( Exception ex ) { 
-            ex.printStackTrace();
-            this.jTextField1.setForeground(Color.red);
-        }
+ 
+//        this.jTextField1.setForeground(Color.orange);
+//        
+//        importDirected = this.jcbDIRECTED.isSelected();
+//        appendAsNewTimeRange = this.jcbAppend.isSelected();
+//        
+//        NetworkLayer nl = new NetworkLayer();
+//           
+//        nl.edgelistQ = this.edgesStatic.getText();
+//        nl.nodelistQ = this.nodes.getText();       
+//        nl.directed = importDirected;
+//        
+//        MultiLayerNetwork.setDefaultLayer(nl);
+//        
+//        try { 
+//            jButton2ActionPerformed( null );
+//            this.jTextField1.setForeground(Color.green);
+//        } 
+//        catch( Exception ex ) { 
+//            ex.printStackTrace();
+//            this.jTextField1.setForeground(Color.red);
+//        }
         
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -688,7 +679,6 @@ public final class TimedependentMultiLayerNetworkManager extends TopComponent {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField edgesStatic;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
@@ -712,7 +702,9 @@ public final class TimedependentMultiLayerNetworkManager extends TopComponent {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSpinner jSpinnerPARTITION;
+    private javax.swing.JTextArea jTa_LOG;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
@@ -816,52 +808,54 @@ public final class TimedependentMultiLayerNetworkManager extends TopComponent {
 
             String queryForLayerSQL = "[[Category:TMN_layer]][[belongs_to_TMN::"+networkName+"]]|?TMN_layer_name";
                     
-//            URI uri = new URI( "http://semanpix.de/oldtimer/wiki/api.php?action=ask&format=json&query=" + encodeQuery( queryForLayerSQL ) );
-//            
-//            String uri2 = "http://semanpix.de/oldtimer/wiki/api.php?action=ask&format=json&query=" + queryForLayerSQL ;
-//
-//            httpGet.setURI( uri );
-//            
-//            System.out.println("[Request:]\n" + uri2);
-//            
-//            if( comp != null ) comp.setQuery( uri2 );
-//            
-//            response = httpClient.execute(httpGet);
-//
-//            if (response.getStatusLine().getStatusCode() != 200) {
-//                throw new RuntimeException("Failed : HTTP error code : "
-//                        + response.getStatusLine().getStatusCode());
-//            }
-//
-//            BufferedReader br = new BufferedReader(new InputStreamReader(
-//                    (response.getEntity().getContent())));
-//
-//            StringBuffer sb = new StringBuffer();
-//            String output;
-//            
-//            System.out.println("Output from Server .... \n");
-//            while ((output = br.readLine()) != null) {
-//                System.out.println(output);
-//                sb.append( output);
-//            }
-//            
-//            if( comp != null ) comp.setResponse( sb.toString() );
-//             
+            URI uri = new URI( HadoopClusterDefaults.getEtoshaMetastoreURI() + "wiki/api.php?action=ask&format=json&query=" + encodeQuery( queryForLayerSQL ) );
             
-//            JSONObject obj1 = new JSONObject( sb.toString() );
-//            
-//            JSONObject obj2 = obj1.getJSONObject( "query" );
-//               
-//            JSONObject obj3 = obj2.getJSONObject( "results" );
-//            Iterator<String> it = obj3.keys(); 
-//            while( it.hasNext() ){
-//                String key = it.next();
-//                JSONObject obj = obj3.getJSONObject(key);
-//                JSONObject obj4 = obj.getJSONObject("printouts");
-//                String nln = obj4.optString("TMN layer name" );
-//                System.out.println( nln ); 
-//                q.append( nln.substring( 2 , nln.length() - 2 ) + "\n"); 
-//            }
+            String uri2 = HadoopClusterDefaults.getEtoshaMetastoreURI() + "/api.php?action=ask&format=json&query=" + queryForLayerSQL ;
+
+            httpGet.setURI( uri );
+            
+            System.out.println("[Request          :]\n" + uri2);
+            System.out.println("[Request (encoded):]\n" + HadoopClusterDefaults.getEtoshaMetastoreURI() + "wiki/api.php?action=ask&format=json&query=" + encodeQuery( queryForLayerSQL ));
+            
+            if( comp != null ) comp.setQuery( uri2 );
+            else System.out.println( "ERROR: comp == null !");
+            
+            response = httpClient.execute(httpGet);
+
+            if (response.getStatusLine().getStatusCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + response.getStatusLine().getStatusCode());
+            }
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (response.getEntity().getContent())));
+
+            StringBuffer sb = new StringBuffer();
+            String output;
+            
+            System.out.println(">>> Output from Server .... \n");
+            while ((output = br.readLine()) != null) {
+                System.out.println(output);
+                sb.append( output);
+            }
+            
+            if( comp != null ) comp.setResponse( sb.toString() );
+             
+            
+            JSONObject obj1 = new JSONObject( sb.toString() );
+            
+            JSONObject obj2 = obj1.getJSONObject( "query" );
+               
+            JSONObject obj3 = obj2.getJSONObject( "results" );
+            Iterator<String> it = obj3.keys(); 
+            while( it.hasNext() ){
+                String key = it.next();
+                JSONObject obj = obj3.getJSONObject(key);
+                JSONObject obj4 = obj.getJSONObject("printouts");
+                String nln = obj4.optString("TMN layer name" );
+                System.out.println( nln ); 
+                q.append( nln.substring( 2 , nln.length() - 2 ) + "\n"); 
+            }
             
             
     
@@ -900,16 +894,15 @@ public final class TimedependentMultiLayerNetworkManager extends TopComponent {
 
             String queryForLayerSQL = "[[Category:TMN_layer]][[TMN_layer_name::"+layerName+"]][[belongs_to_TMN::"+networkName+"]]|?TMN_layer_nlq|?TMN_layer_elq";
                     
-//            URI uri = new URI( "http://semanpix.de/oldtimer/wiki/api.php?action=ask&format=json&query=" + encodeQuery( queryForLayerSQL ) );
-//            //");
-//            
-//            String uri2 = "http://semanpix.de/oldtimer/wiki/api.php?action=ask&format=json&query=" + queryForLayerSQL ;
-//
-//            httpGet.setURI( uri );
-//            
-//            System.out.println("[Request:]\n" + uri2);
-//            
-//            if( comp != null ) comp.setQuery( uri2 );
+            URI uri = new URI( HadoopClusterDefaults.getEtoshaMetastoreURI() + "api.php?action=ask&format=json&query=" + encodeQuery( queryForLayerSQL ) );
+            
+            String uri2 = HadoopClusterDefaults.getEtoshaMetastoreURI() + "/api.php?action=ask&format=json&query=" + queryForLayerSQL ;
+
+            httpGet.setURI( uri );
+            
+            System.out.println("[Request:]\n" + uri2);
+            
+            if( comp != null ) comp.setQuery( uri2 );
             
 
 //            ArrayList<NameValuePair> nvps;
@@ -928,46 +921,46 @@ public final class TimedependentMultiLayerNetworkManager extends TopComponent {
 //                httpPost.addHeader(h.getName(), h.getValue());
 //            }
 
-//            response = httpClient.execute(httpGet);
-//
-//            if (response.getStatusLine().getStatusCode() != 200) {
-//                throw new RuntimeException("Failed : HTTP error code : "
-//                        + response.getStatusLine().getStatusCode());
-//            }
-//
-//            BufferedReader br = new BufferedReader(new InputStreamReader(
-//                    (response.getEntity().getContent())));
-//
-//            StringBuffer sb = new StringBuffer();
-//            String output;
-//            
-//            System.out.println("Output from Server .... \n");
-//            while ((output = br.readLine()) != null) {
-//                System.out.println(output);
-//                sb.append( output);
-//            }
-//            
-//            if( comp != null ) comp.setResponse( sb.toString() );
+            response = httpClient.execute(httpGet);
+
+            if (response.getStatusLine().getStatusCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + response.getStatusLine().getStatusCode());
+            }
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (response.getEntity().getContent())));
+
+            StringBuffer sb = new StringBuffer();
+            String output;
+            
+            System.out.println("Output from Server .... \n");
+            while ((output = br.readLine()) != null) {
+                System.out.println(output);
+                sb.append( output);
+            }
+            
+            if( comp != null ) comp.setResponse( sb.toString() );
              
             
-//            JSONObject obj1 = new JSONObject( sb.toString() );
-//            
-//            JSONObject obj2 = obj1.getJSONObject( "query" );
-//               
-//            JSONObject obj3 = obj2.getJSONObject( "results" );
-//            
-//            JSONObject obj4 = obj3.getJSONObject( layerName );
-//           
-//            JSONObject obj5 = obj4.getJSONObject( "printouts" );
-//            
-//            String nlq = obj5.optString("TMN layer nlq" );
-//            String elq = obj5.optString( "TMN layer elq" );
-//            
-//            System.out.println( nlq );
-//            System.out.println( elq );
-//            
-//            q[0] = URLDecoder.decode( nlq.substring( 2 , nlq.length() - 2 ) );
-//            q[1] = URLDecoder.decode( elq.substring( 2 , elq.length() - 2 ) );
+            JSONObject obj1 = new JSONObject( sb.toString() );
+            
+            JSONObject obj2 = obj1.getJSONObject( "query" );
+               
+            JSONObject obj3 = obj2.getJSONObject( "results" );
+            
+            JSONObject obj4 = obj3.getJSONObject( layerName );
+           
+            JSONObject obj5 = obj4.getJSONObject( "printouts" );
+            
+            String nlq = obj5.optString("TMN layer nlq" );
+            String elq = obj5.optString( "TMN layer elq" );
+            
+            System.out.println( nlq );
+            System.out.println( elq );
+            
+            q[0] = URLDecoder.decode( nlq.substring( 2 , nlq.length() - 2 ) );
+            q[1] = URLDecoder.decode( elq.substring( 2 , elq.length() - 2 ) );
             
 
         } catch (Exception e) {
@@ -988,9 +981,9 @@ public final class TimedependentMultiLayerNetworkManager extends TopComponent {
     
     }
     
-//    private static String encodeQuery(String qu) {
-//        return URLEncoder.encode( qu );
-//    }
+    private static String encodeQuery(String qu) {
+        return URLEncoder.encode( qu );
+    }
 
     private void setQuery(String uri2) {
         this.jtaQuery.setText( uri2 );
@@ -1008,88 +1001,88 @@ public final class TimedependentMultiLayerNetworkManager extends TopComponent {
         HttpGet httpGet = null;
         CloseableHttpResponse response = null;
 
-//        try {
-//
-//            httpClient = HttpClients.createDefault();
-//            httpGet = new HttpGet();
-//
-//            String query = "[[Modification date::+]]|?Modification date|sort=Modification date|order=Ddesc";
-//
-//            String queryForLayerSQL = "[[Category:TMN]]|?TMN_name";
-//                    
-//            URI uri = new URI( "http://semanpix.de/oldtimer/wiki/api.php?action=ask&format=json&query=" + encodeQuery( queryForLayerSQL ) );
-//            
-//            String uri2 = "http://semanpix.de/oldtimer/wiki/api.php?action=ask&format=json&query=" + queryForLayerSQL ;
-//
-//            httpGet.setURI( uri );
-//            
-//            System.out.println("[Request:]\n" + uri2);
-//            
-//            if( comp != null ) comp.setQuery( uri2 );
-//            
-//            response = httpClient.execute(httpGet);
-//
-//            if (response.getStatusLine().getStatusCode() != 200) {
-//                throw new RuntimeException("Failed : HTTP error code : "
-//                        + response.getStatusLine().getStatusCode());
-//            }
-//
-//            BufferedReader br = new BufferedReader(new InputStreamReader(
-//                    (response.getEntity().getContent())));
-//
-//            StringBuffer sb = new StringBuffer();
-//            String output;
-//            
-//            System.out.println("Output from Server .... \n");
-//            while ((output = br.readLine()) != null) {
-//                System.out.println(output);
-//                sb.append( output);
-//            }
-//            
-//            if( comp != null ) comp.setResponse( sb.toString() );
-//             
-//            
-//            JSONObject obj1 = new JSONObject( sb.toString() );
-//            
-//            JSONObject obj2 = obj1.getJSONObject( "query" );
-//               
-//            JSONObject obj3 = obj2.getJSONObject( "results" );
-//            Iterator it = obj3.keys(); 
-//            while( it.hasNext() ){
-//                String key = (String)it.next();
-//                JSONObject obj = obj3.getJSONObject(key);
-//                String nlnfull = obj.optString("fulltext" );
-//                JSONObject obj4 = obj.getJSONObject("printouts");
-//
-//                String nln = obj4.optString("TMN name" );
-//                                
-//                
-//                System.out.println( nln ); 
-//                q.append( nln.substring( 2 , nln.length() - 2 ) + " : " + nlnfull + "\n"); 
-//            }
-//            
-//            
-//        } catch (MalformedURLException e) {
-//
-//            e.printStackTrace();
-//
-//        } catch (IOException e) {
-//
-//            e.printStackTrace();
-//
-//        } catch (URISyntaxException ex) {
-//            Exceptions.printStackTrace(ex);
-//        } catch (JSONException ex) {
-//            Exceptions.printStackTrace(ex);
-//        } finally {
-//            try{
-//                if( response != null ) response.close();
-//                httpClient.close();
-//            }catch(Exception ex) {
-//                ex.printStackTrace();
-//            }
-//        }
-//        
+        try {
+
+            httpClient = HttpClients.createDefault();
+            httpGet = new HttpGet();
+
+            String query = "[[Modification date::+]]|?Modification date|sort=Modification date|order=Ddesc";
+
+            String queryForLayerSQL = "[[Category:TMN]]|?TMN_name";
+                    
+            URI uri = new URI( HadoopClusterDefaults.getEtoshaMetastoreURI() + "/api.php?action=ask&format=json&query=" + encodeQuery( queryForLayerSQL ) );
+            
+            String uri2 = HadoopClusterDefaults.getEtoshaMetastoreURI() + "/api.php?action=ask&format=json&query=" + queryForLayerSQL ;
+
+            httpGet.setURI( uri );
+            
+            System.out.println("[Request:]\n" + uri2);
+            
+            if( comp != null ) comp.setQuery( uri2 );
+            
+            response = httpClient.execute(httpGet);
+
+            if (response.getStatusLine().getStatusCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + response.getStatusLine().getStatusCode());
+            }
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (response.getEntity().getContent())));
+
+            StringBuffer sb = new StringBuffer();
+            String output;
+            
+            System.out.println("Output from Server .... \n");
+            while ((output = br.readLine()) != null) {
+                System.out.println(output);
+                sb.append( output);
+            }
+            
+            if( comp != null ) comp.setResponse( sb.toString() );
+             
+            
+            JSONObject obj1 = new JSONObject( sb.toString() );
+            
+            JSONObject obj2 = obj1.getJSONObject( "query" );
+               
+            JSONObject obj3 = obj2.getJSONObject( "results" );
+            Iterator<String> it = obj3.keys(); 
+            while( it.hasNext() ){
+                String key = it.next();
+                JSONObject obj = obj3.getJSONObject(key);
+                String nlnfull = obj.optString("fulltext" );
+                JSONObject obj4 = obj.getJSONObject("printouts");
+
+                String nln = obj4.optString("TMN name" );
+                                
+                
+                System.out.println( nln ); 
+                q.append( nln.substring( 2 , nln.length() - 2 ) + " : " + nlnfull + "\n"); 
+            }
+            
+            
+        } catch (MalformedURLException e) {
+
+            e.printStackTrace();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        } catch (URISyntaxException ex) {
+            Exceptions.printStackTrace(ex);
+        } catch (JSONException ex) {
+            Exceptions.printStackTrace(ex);
+        } finally {
+            try{
+                if( response != null ) response.close();
+                httpClient.close();
+            }catch(Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        
         return q.toString();
     
     

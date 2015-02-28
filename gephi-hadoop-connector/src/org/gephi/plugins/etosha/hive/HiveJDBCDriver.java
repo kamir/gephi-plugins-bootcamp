@@ -15,7 +15,7 @@ public class HiveJDBCDriver implements SQLDriver {
 
     private static String driverName = "org.apache.hadoop.hive.jdbc.HiveDriver";
 
-    private static String conStr2 = "jdbc:hive://"+HadoopClusterDefaults.HIVE_SERVER_IP+":10000/default";
+    private static String conStr2 = "jdbc:hive://127.0.0.1:10000/default";
     
     Connection con = null;
             
